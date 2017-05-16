@@ -6,18 +6,13 @@
 //  Copyright © 2016 Realm Inc. All rights reserved.
 //
 
-// For brevity all the example code is included in this single file,
-// in your own projects you should spread code and logic into different classes.
-
 import UIKit
-
 import RxSwift
 import RxCocoa
-
 import RealmSwift
 import RxRealm
 
-/// provide factory method for urls to GitHub's search API
+/// Provide factory method for urls to GitHub's search API
 extension URL {
     static func gitHubSearch(_ query: String, language: String) -> URL {
         let query = query.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
@@ -27,34 +22,36 @@ extension URL {
 
 /// Observable emitting the currently selected segment title
 extension UISegmentedControl {
-    public var rx_selectedTitle: Observable<String?> {
+    public var rx_selected: Observable<String?> {
         return rx.value.map(titleForSegment)
     }
 }
 
 class ViewController: UIViewController {
-    //MARK: - Outlets
+    // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var query: UITextField!
     @IBOutlet weak var language: UISegmentedControl!
 
 
-    //MARK: - Properties
+    // MARK: - Properties
     fileprivate let bag = DisposeBag()
     fileprivate var resultsBag = DisposeBag()
 
     fileprivate var repos: Results<Repo>?
 
-    //MARK: - Bind UI
+    // MARK: - Bind UI
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //define input
-        let input = Observable.combineLatest(query.rx.text.filter { ($0?.utf8.count ?? 0) > 2}, language.rx_selectedTitle)
-        {term, language in (term, language!)}
+        // Define input.
+        let text = query.rx.text.filter { $0?.characters.count ?? 0 > 2 }
+        let input = Observable.combineLatest(text, language.rx_selected) { term, language in
+            return (term, language!)
+            }
             .shareReplay(1)
 
-        //call Github, save to Realm
+        // Call Github, save to Realm.
         input.throttle(0.5, scheduler: MainScheduler.instance)
             .map { URL.gitHubSearch($0 ?? "", language: $1)}
             .do(onNext: { _ in UIApplication.shared.isNetworkActivityIndicatorVisible = true })
@@ -63,13 +60,13 @@ class ViewController: UIViewController {
             }
             .do(onNext: { _ in UIApplication.shared.isNetworkActivityIndicatorVisible = false })
             .observeOn(ConcurrentDispatchQueueScheduler(qos: DispatchQoS(qosClass: DispatchQoS.QoSClass.background, relativePriority: 1)))
-            .map {json -> [Repo] in
-                guard let json = json as? [String: AnyObject],
-                    let items = json["items"] as? [AnyObject] else {return []}
+            .map { json -> [Repo] in
+                guard let json = json as? [String: Any],
+                    let items = json["items"] as? [Any] else { return [] }
 
-                return items.map {Repo(value: $0)}
+                return items.map { Repo(value: $0) }
             }
-            .subscribe(onNext: {repos in
+            .subscribe(onNext: { repos in
                 let realm = try! Realm()
                 try! realm.write {
                     realm.add(repos, update: true)
@@ -77,21 +74,21 @@ class ViewController: UIViewController {
             })
             .addDisposableTo(bag)
 
-        //bind results to table
-        input.subscribe(onNext: {[weak self] in
+        // Bind results to table.
+        input.subscribe(onNext: { [weak self] in
             self?.bindTableView($0, language: $1)
         })
             .addDisposableTo(bag)
 
-        //reset table
-        query.rx.text.filter { ($0?.utf8.count ?? 0) <= 2}
-            .subscribe(onNext: {[weak self] _ in
+        // Reset table.
+        query.rx.text.filter { $0?.characters.count ?? 0 <= 2 }
+            .subscribe(onNext: { [weak self] _ in
                 self?.bindTableView(nil)
             })
             .addDisposableTo(bag)
     }
 
-    /// bind results to table view
+    /// Bind results to table view.
     func bindTableView(_ term: String?, language: String? = nil) {
         resultsBag = DisposeBag()
 
@@ -132,7 +129,7 @@ extension ViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let repo = repos![indexPath.row]
-        
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "RepoCell")!
         cell.textLabel!.text = repo.full_name
         return cell
