@@ -123,16 +123,27 @@ class ViewController: UIViewController {
     }
 }
 
+// MARK: - UITableView data source
+
 extension ViewController: UITableViewDataSource {
-    //MARK: - UITableView data source
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return repos?.count ?? 0
     }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let repo = repos![indexPath.row]
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "RepoCell")!
         cell.textLabel!.text = repo.full_name
         return cell
+    }
+}
+
+// MARK: - UITableView delegate
+
+extension ViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        assert(section == 0)
+        return 0.5
     }
 }

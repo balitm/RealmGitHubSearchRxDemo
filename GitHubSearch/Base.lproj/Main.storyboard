@@ -12,7 +12,7 @@
         <!--View Controller-->
         <scene sceneID="n7A-8x-GRD">
             <objects>
-                <viewController storyboardIdentifier="ViewController" id="dR1-gQ-zoy" customClass="ViewController" customModule="GitHubSearch" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" automaticallyAdjustsScrollViewInsets="NO" id="dR1-gQ-zoy" customClass="ViewController" customModule="GitHubSearch" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SpK-lM-Gvv"/>
                         <viewControllerLayoutGuide type="bottom" id="U4L-a4-q6M"/>
@@ -21,8 +21,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="25" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="koj-LU-9A6">
-                                <rect key="frame" x="0.0" y="123" width="375" height="544"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="1" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="koj-LU-9A6">
+                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RepoCell" textLabel="sGc-Tw-qag" style="IBUITableViewCellStyleDefault" id="UL8-bu-BLX">
@@ -45,12 +45,12 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="dR1-gQ-zoy" id="HvA-uW-5wP"/>
+                                    <outlet property="delegate" destination="dR1-gQ-zoy" id="bas-lV-Vu0"/>
                                 </connections>
                             </tableView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aST-rU-Rtj">
                                 <rect key="frame" x="17.5" y="76" width="340" height="29"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="340" id="1sB-aj-bt1"/>
                                     <constraint firstAttribute="height" constant="28" id="yIu-z8-NGh"/>
                                 </constraints>
                                 <segments>
@@ -60,14 +60,16 @@
                                 </segments>
                             </segmentedControl>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="aST-rU-Rtj" firstAttribute="top" secondItem="SpK-lM-Gvv" secondAttribute="bottom" constant="12" id="0HT-bY-VTU"/>
                             <constraint firstItem="koj-LU-9A6" firstAttribute="leading" secondItem="MqP-Y2-0u9" secondAttribute="leading" id="BD2-nh-D5O"/>
+                            <constraint firstAttribute="trailing" secondItem="aST-rU-Rtj" secondAttribute="trailing" constant="17.5" id="JLp-KL-25I"/>
                             <constraint firstItem="U4L-a4-q6M" firstAttribute="top" secondItem="koj-LU-9A6" secondAttribute="bottom" id="Pf5-hq-1f8"/>
                             <constraint firstAttribute="trailing" secondItem="koj-LU-9A6" secondAttribute="trailing" id="QTk-ip-IJk"/>
                             <constraint firstItem="aST-rU-Rtj" firstAttribute="centerX" secondItem="MqP-Y2-0u9" secondAttribute="centerX" id="cMY-L5-JIe"/>
-                            <constraint firstItem="koj-LU-9A6" firstAttribute="top" secondItem="SpK-lM-Gvv" secondAttribute="bottom" constant="59" id="dor-eq-DQn"/>
+                            <constraint firstItem="koj-LU-9A6" firstAttribute="top" secondItem="aST-rU-Rtj" secondAttribute="bottom" constant="12" id="iTT-QY-1Tq"/>
+                            <constraint firstItem="aST-rU-Rtj" firstAttribute="leading" secondItem="MqP-Y2-0u9" secondAttribute="leading" constant="17.5" id="wrF-jD-bor"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Szs-gp-00T">
