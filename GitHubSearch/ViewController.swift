@@ -9,7 +9,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RealmSwift
 import RxRealm
 
 /// Provide factory method for urls to GitHub's search API
@@ -27,96 +26,54 @@ extension UISegmentedControl {
     }
 }
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
     // MARK: - Outlets
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var query: UITextField!
     @IBOutlet weak var language: UISegmentedControl!
 
-
     // MARK: - Properties
     fileprivate let bag = DisposeBag()
-    fileprivate var resultsBag = DisposeBag()
 
-    fileprivate var repos: Results<Repo>?
+    fileprivate var repos = [Repo]() //Results<Repo>?
+    var modelView: ModelView!
 
     // MARK: - Bind UI
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Activate search.
+        query.becomeFirstResponder()
+
         // Define input.
-        let text = query.rx.text.filter { $0?.characters.count ?? 0 > 2 }
-        let input = Observable.combineLatest(text, language.rx_selected) { term, language in
-            return (term, language!)
-            }
-            .shareReplay(1)
-
-        // Call Github, save to Realm.
-        input.throttle(0.5, scheduler: MainScheduler.instance)
-            .map { URL.gitHubSearch($0 ?? "", language: $1)}
-            .do(onNext: { _ in UIApplication.shared.isNetworkActivityIndicatorVisible = true })
-            .flatMapLatest { url in
-                return URLSession.shared.rx.json(url: url).catchErrorJustReturn([])
-            }
-            .do(onNext: { _ in UIApplication.shared.isNetworkActivityIndicatorVisible = false })
-            .observeOn(ConcurrentDispatchQueueScheduler(qos: DispatchQoS(qosClass: DispatchQoS.QoSClass.background, relativePriority: 1)))
-            .map { json -> [Repo] in
-                guard let json = json as? [String: Any],
-                    let items = json["items"] as? [Any] else { return [] }
-
-                return items.map { Repo(value: $0) }
-            }
-            .subscribe(onNext: { repos in
-                let realm = try! Realm()
-                try! realm.write {
-                    realm.add(repos, update: true)
-                }
-            })
-            .addDisposableTo(bag)
+        let text = query.rx.text.map { $0 ?? "" }
+        let lang = language.rx_selected.map { $0! }
+        modelView = ModelView(term: text, language: lang)
 
         // Bind results to table.
-        input.subscribe(onNext: { [weak self] in
-            self?.bindTableView($0, language: $1)
-        })
-            .addDisposableTo(bag)
-
-        // Reset table.
-        query.rx.text.filter { $0?.characters.count ?? 0 <= 2 }
-            .subscribe(onNext: { [weak self] _ in
-                self?.bindTableView(nil)
+        modelView.repos
+            .subscribe(onNext: { [weak self] repos, changes in
+                DLog("DB changed Thread on main: \(Thread.isMainThread)")
+                self?._bindTableView(repos, changes)
             })
-            .addDisposableTo(bag)
+            .disposed(by: bag)
     }
 
     /// Bind results to table view.
-    func bindTableView(_ term: String?, language: String? = nil) {
-        resultsBag = DisposeBag()
+    private func _bindTableView(_ repos: [Repo], _ changes: RealmChangeset?) {
+        DLog("Repos changed, set: \(changes).")
+        guard repos.count != 0 || self.repos.count != 0 else { return }
 
-        guard let term = term, let language = language else {
-            repos = nil
+        self.repos = repos
+
+        if let changes = changes {
+            tableView.beginUpdates()
+            tableView.insertRows(at: changes.inserted.map { IndexPath(row: $0, section: 0) },
+                                 with: .automatic)
+            tableView.endUpdates()
+        } else {
             tableView.reloadData()
-            return
         }
-
-        let realm = try! Realm()
-        repos = realm.objects(Repo.self)
-            .filter("full_name CONTAINS[c] %@ AND language = %@", term, language)
-
-        Observable.changeset(from: repos!)
-            .subscribe(onNext: { [weak self] results, changes in
-                guard let tableView = self?.tableView else { return }
-
-                if let changes = changes {
-                    tableView.beginUpdates()
-                    tableView.insertRows(at: changes.inserted.map { IndexPath(row: $0, section: 0) },
-                                         with: .automatic)
-                    tableView.endUpdates()
-                } else {
-                    tableView.reloadData()
-                }
-
-            })
-            .addDisposableTo(resultsBag)
     }
 }
 
@@ -124,11 +81,11 @@ class ViewController: UIViewController {
 
 extension ViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repos?.count ?? 0
+        return repos.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let repo = repos![indexPath.row]
+        let repo = repos[indexPath.row]
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "RepoCell")!
         cell.textLabel!.text = repo.full_name
