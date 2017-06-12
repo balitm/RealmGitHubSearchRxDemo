@@ -15,8 +15,7 @@ final class ModelView {
 
     typealias Parameter = (String, String)
 
-    // let request: Request
-    let repos = PublishSubject<([Repo], RealmChangeset?)>()
+    let repos = BehaviorSubject<([String], [Int]?)>(value: ([], nil))
     private let bag = DisposeBag()
     private var resultBag = DisposeBag()
 
@@ -56,7 +55,7 @@ final class ModelView {
                 .filter("full_name CONTAINS[c] %@ AND language = %@", params.0, params.1)
 
             Observable.changeset(from: result)
-                .map { ($0.0.map { $0 }, $0.1) }
+                .map { ($0.0.map { $0.full_name }, $0.1?.inserted) }
                 .bind(to: self.repos)
             .disposed(by: self.resultBag)
         })
@@ -67,10 +66,9 @@ final class ModelView {
             .filter { params in
                 params.0.characters.count <= 2
             }
-            .subscribe(onNext: { params in
-                self.repos.on(.next(([Repo](), nil)))
+            .subscribe(onNext: { _ in
+                self.repos.on(.next(([], nil)))
             })
             .disposed(by: bag)
-
     }
 }

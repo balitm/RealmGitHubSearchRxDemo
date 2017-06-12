@@ -9,7 +9,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxRealm
 
 /// Provide factory method for urls to GitHub's search API
 extension URL {
@@ -35,7 +34,7 @@ final class ViewController: UIViewController {
     // MARK: - Properties
     fileprivate let bag = DisposeBag()
 
-    fileprivate var repos = [Repo]() //Results<Repo>?
+    fileprivate var repos = [String]()
     var modelView: ModelView!
 
     // MARK: - Bind UI
@@ -60,7 +59,7 @@ final class ViewController: UIViewController {
     }
 
     /// Bind results to table view.
-    private func _bindTableView(_ repos: [Repo], _ changes: RealmChangeset?) {
+    private func _bindTableView(_ repos: [String], _ changes: [Int]?) {
         DLog("Repos changed, set: \(changes).")
         guard repos.count != 0 || self.repos.count != 0 else { return }
 
@@ -68,7 +67,7 @@ final class ViewController: UIViewController {
 
         if let changes = changes {
             tableView.beginUpdates()
-            tableView.insertRows(at: changes.inserted.map { IndexPath(row: $0, section: 0) },
+            tableView.insertRows(at: changes.map { IndexPath(row: $0, section: 0) },
                                  with: .automatic)
             tableView.endUpdates()
         } else {
@@ -88,7 +87,7 @@ extension ViewController: UITableViewDataSource {
         let repo = repos[indexPath.row]
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "RepoCell")!
-        cell.textLabel!.text = repo.full_name
+        cell.textLabel!.text = repo
         return cell
     }
 }
