@@ -9,6 +9,14 @@
 import Foundation
 import RxSwift
 
+/// Provide factory method for urls to GitHub's search API
+extension URL {
+    static func gitHubSearch(_ query: String, language: String) -> URL {
+        let query = query.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
+        return URL(string: "https://api.github.com/search/repositories?q=\(query)+language:\(language)+in:name")!
+    }
+}
+
 struct Request {
     let response: Observable<[Any]>
 

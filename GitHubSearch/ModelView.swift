@@ -10,12 +10,41 @@ import Foundation
 import RealmSwift
 import RxSwift
 import RxRealm
+import RxDataSources
+
+struct RepoData {
+    var identity: Int
+    var name: String
+}
+
+extension RepoData: IdentifiableType, Equatable {
+    typealias Identity = Int
+}
+
+func ==(lhs: RepoData, rhs: RepoData) -> Bool {
+    return lhs.identity == rhs.identity
+}
+
+struct SectionRepoData {
+    var identity: RepoData.Identity
+    var items: [Item]
+}
+
+extension SectionRepoData: AnimatableSectionModelType {
+    typealias Item = RepoData
+    typealias Identity = RepoData.Identity
+
+    init(original: SectionRepoData, items: [Item]) {
+        self = original
+        self.items = items
+    }
+}
 
 final class ModelView {
 
     typealias Parameter = (String, String)
 
-    let repos = BehaviorSubject<([String], [Int]?)>(value: ([], nil))
+    let repos = BehaviorSubject<([SectionRepoData])>(value: [])
     private let bag = DisposeBag()
     private var resultBag = DisposeBag()
 
@@ -55,7 +84,11 @@ final class ModelView {
                 .filter("full_name CONTAINS[c] %@ AND language = %@", params.0, params.1)
 
             Observable.changeset(from: result)
-                .map { ($0.0.map { $0.full_name }, $0.1?.inserted) }
+                .map { (objs: AnyRealmCollection<Repo>, _: RealmChangeset?) -> [SectionRepoData] in
+                    let section = SectionRepoData(identity: 0,
+                                                  items: objs.map { RepoData(identity: $0.id, name: $0.full_name) })
+                    return [section]
+                }
                 .bind(to: self.repos)
             .disposed(by: self.resultBag)
         })
@@ -67,7 +100,7 @@ final class ModelView {
                 params.0.characters.count <= 2
             }
             .subscribe(onNext: { _ in
-                self.repos.on(.next(([], nil)))
+                self.repos.on(.next([]))
             })
             .disposed(by: bag)
     }

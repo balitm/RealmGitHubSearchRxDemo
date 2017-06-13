@@ -9,14 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
-
-/// Provide factory method for urls to GitHub's search API
-extension URL {
-    static func gitHubSearch(_ query: String, language: String) -> URL {
-        let query = query.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)!
-        return URL(string: "https://api.github.com/search/repositories?q=\(query)+language:\(language)+in:name")!
-    }
-}
+import RxDataSources
 
 /// Observable emitting the currently selected segment title
 extension UISegmentedControl {
@@ -34,9 +27,9 @@ final class ViewController: UIViewController {
     // MARK: - Properties
     fileprivate let bag = DisposeBag()
 
-    fileprivate var repos = [String]()
     var modelView: ModelView!
-
+    let dataSource = RxTableViewSectionedReloadDataSource<SectionRepoData>()
+    
     // MARK: - Bind UI
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,46 +42,17 @@ final class ViewController: UIViewController {
         let lang = language.rx_selected.map { $0! }
         modelView = ModelView(term: text, language: lang)
 
+        // Setup data source.
+        dataSource.configureCell = { ds, tv, ip, item in
+            let cell = tv.dequeueReusableCell(withIdentifier: "RepoCell", for: ip)
+            cell.textLabel?.text = item.name
+            return cell
+        }
+
         // Bind results to table.
         modelView.repos
-            .subscribe(onNext: { [weak self] repos, changes in
-                DLog("DB changed Thread on main: \(Thread.isMainThread)")
-                self?._bindTableView(repos, changes)
-            })
+            .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: bag)
-    }
-
-    /// Bind results to table view.
-    private func _bindTableView(_ repos: [String], _ changes: [Int]?) {
-        DLog("Repos changed, set: \(changes).")
-        guard repos.count != 0 || self.repos.count != 0 else { return }
-
-        self.repos = repos
-
-        if let changes = changes {
-            tableView.beginUpdates()
-            tableView.insertRows(at: changes.map { IndexPath(row: $0, section: 0) },
-                                 with: .automatic)
-            tableView.endUpdates()
-        } else {
-            tableView.reloadData()
-        }
-    }
-}
-
-// MARK: - UITableView data source
-
-extension ViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repos.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let repo = repos[indexPath.row]
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: "RepoCell")!
-        cell.textLabel!.text = repo
-        return cell
     }
 }
 
