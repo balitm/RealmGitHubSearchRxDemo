@@ -3,7 +3,7 @@
 //  GitHubSearch
 //
 //  Created by Balázs Kilvády on 5/20/17.
-//  Copyright © 2017 Realm Inc. All rights reserved.
+//  Copyright © 2017 kil-dev. All rights reserved.
 //
 
 import Foundation
