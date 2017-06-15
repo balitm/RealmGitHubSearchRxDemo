@@ -2,3 +2,4 @@ github "realm/realm-cocoa"
 github "RxSwiftCommunity/RxRealm"
 github "ReactiveX/RxSwift"
 github "RxSwiftCommunity/RxDataSources" ~> 1.0
+github "MLSDev/TRON"
