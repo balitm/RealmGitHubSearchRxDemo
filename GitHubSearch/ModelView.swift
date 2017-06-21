@@ -61,11 +61,13 @@ final class ModelView {
 //                return URL.gitHubSearch($0, language: $1)
 //        }
 
-        let _ = longInput.throttle(0.5, scheduler: MainScheduler.instance)
-            .flatMapLatest { params -> Observable<API.Github> in
+        let events = longInput.throttle(0.5, scheduler: MainScheduler.instance)
+            .flatMapLatest { params -> Observable<Event<API.Github>> in
                 DLog("params mapped to search: \(params.0), \(params.1)")
                 return API.Github.search(params.0, language: params.1)
             }
+
+        events.elements()
             .subscribe(onNext: { (hit: API.Github) in
                 DLog("request executed: \(hit)")
                 let repos = hit.items.map { Repo(value: $0) }
@@ -82,6 +84,18 @@ final class ModelView {
                 DLog("Disposed")
             })
             .disposed(by: bag)
+
+        events.errors().subscribe(onNext: { (error: Error) in
+                DLog("Error: \(error)")
+            }, onError: { error in
+                DLog("Error: \(error)")
+            }, onCompleted: {
+                DLog("Completed")
+            }, onDisposed: {
+                DLog("Disposed")
+            })
+            .disposed(by: bag)
+
 //        let request = Request(urlObservable: url)
 //
 //        request.response

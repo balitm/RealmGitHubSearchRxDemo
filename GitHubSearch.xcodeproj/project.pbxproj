@@ -15,6 +15,8 @@
 		2949A82C1EFA752B00216B68 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A8271EFA752B00216B68 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2949A82D1EFA752B00216B68 /* TRON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A8281EFA752B00216B68 /* TRON.framework */; };
 		2949A82E1EFA752B00216B68 /* TRON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A8281EFA752B00216B68 /* TRON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2949A8301EFA97DF00216B68 /* RxSwiftExt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A82F1EFA97DF00216B68 /* RxSwiftExt.framework */; };
+		2949A8311EFA97DF00216B68 /* RxSwiftExt.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A82F1EFA97DF00216B68 /* RxSwiftExt.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		298154D61ECA1A3900357AF2 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298154D11ECA1A3900357AF2 /* Realm.framework */; };
 		298154D71ECA1A3900357AF2 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298154D21ECA1A3900357AF2 /* RealmSwift.framework */; };
 		298154D81ECA1A3900357AF2 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298154D31ECA1A3900357AF2 /* RxCocoa.framework */; };
@@ -47,6 +49,7 @@
 				298154E41ECA1A5800357AF2 /* RxSwift.framework in Embed Frameworks */,
 				298154E21ECA1A5800357AF2 /* RxRealm.framework in Embed Frameworks */,
 				298154E01ECA1A5800357AF2 /* RxCocoa.framework in Embed Frameworks */,
+				2949A8311EFA97DF00216B68 /* RxSwiftExt.framework in Embed Frameworks */,
 				2949A82E1EFA752B00216B68 /* TRON.framework in Embed Frameworks */,
 				2996716A1EF06606000D2B50 /* RxDataSources.framework in Embed Frameworks */,
 				2949A82A1EFA752B00216B68 /* Alamofire.framework in Embed Frameworks */,
@@ -64,6 +67,7 @@
 		2949A8261EFA752B00216B68 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		2949A8271EFA752B00216B68 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		2949A8281EFA752B00216B68 /* TRON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TRON.framework; path = Carthage/Build/iOS/TRON.framework; sourceTree = "<group>"; };
+		2949A82F1EFA97DF00216B68 /* RxSwiftExt.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwiftExt.framework; path = Carthage/Build/iOS/RxSwiftExt.framework; sourceTree = "<group>"; };
 		298154D11ECA1A3900357AF2 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		298154D21ECA1A3900357AF2 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		298154D31ECA1A3900357AF2 /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
@@ -90,6 +94,7 @@
 				298154D61ECA1A3900357AF2 /* Realm.framework in Frameworks */,
 				298154D71ECA1A3900357AF2 /* RealmSwift.framework in Frameworks */,
 				298154D81ECA1A3900357AF2 /* RxCocoa.framework in Frameworks */,
+				2949A8301EFA97DF00216B68 /* RxSwiftExt.framework in Frameworks */,
 				2949A82D1EFA752B00216B68 /* TRON.framework in Frameworks */,
 				299671691EF06606000D2B50 /* RxDataSources.framework in Frameworks */,
 				2949A8291EFA752B00216B68 /* Alamofire.framework in Frameworks */,
@@ -104,6 +109,7 @@
 		298154D01ECA1A3900357AF2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2949A82F1EFA97DF00216B68 /* RxSwiftExt.framework */,
 				2949A8261EFA752B00216B68 /* Alamofire.framework */,
 				2949A8271EFA752B00216B68 /* SwiftyJSON.framework */,
 				2949A8281EFA752B00216B68 /* TRON.framework */,

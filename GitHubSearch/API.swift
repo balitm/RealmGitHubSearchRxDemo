@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import RxSwiftExt
 import TRON
 import SwiftyJSON
 
@@ -41,12 +42,11 @@ extension API {
             self.items = items
         }
 
-        static func search(_ query: String, language: String) -> Observable<Github> {
+        static func search(_ query: String, language: String) -> Observable<Event<Github>> {
             let request: APIRequest<Github, GHError> = tron.request("search/repositories?q=\(query)+language:\(language)+in:name")
             request.method = .get
             DLog("search url: \(request.urlBuilder.url(forPath: "search/repositories?q=\(query)+language:\(language)+in:name"))")
-            let null = try! Github(json: JSON.null)
-            return request.rxResult()//.catchErrorJustReturn(null)
+            return request.rxResult().materialize()
         }
      }
 }
