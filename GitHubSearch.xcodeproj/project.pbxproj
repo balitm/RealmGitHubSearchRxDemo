@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		2909CE841ED1A8560067CFFD /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2909CE831ED1A8560067CFFD /* Log.swift */; };
 		2946B7FB1ECF45FF0017D01F /* ModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2946B7FA1ECF45FF0017D01F /* ModelView.swift */; };
+		2949A8291EFA752B00216B68 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A8261EFA752B00216B68 /* Alamofire.framework */; };
+		2949A82A1EFA752B00216B68 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A8261EFA752B00216B68 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2949A82B1EFA752B00216B68 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A8271EFA752B00216B68 /* SwiftyJSON.framework */; };
+		2949A82C1EFA752B00216B68 /* SwiftyJSON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A8271EFA752B00216B68 /* SwiftyJSON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2949A82D1EFA752B00216B68 /* TRON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A8281EFA752B00216B68 /* TRON.framework */; };
+		2949A82E1EFA752B00216B68 /* TRON.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2949A8281EFA752B00216B68 /* TRON.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		298154D61ECA1A3900357AF2 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298154D11ECA1A3900357AF2 /* Realm.framework */; };
 		298154D71ECA1A3900357AF2 /* RealmSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298154D21ECA1A3900357AF2 /* RealmSwift.framework */; };
 		298154D81ECA1A3900357AF2 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 298154D31ECA1A3900357AF2 /* RxCocoa.framework */; };
@@ -21,7 +27,7 @@
 		298154E41ECA1A5800357AF2 /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 298154D51ECA1A3900357AF2 /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		299671691EF06606000D2B50 /* RxDataSources.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 299671681EF06606000D2B50 /* RxDataSources.framework */; };
 		2996716A1EF06606000D2B50 /* RxDataSources.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 299671681EF06606000D2B50 /* RxDataSources.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		29BE9D4F1ED0BE8100C3F716 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BE9D4E1ED0BE8100C3F716 /* Request.swift */; };
+		29BE9D4F1ED0BE8100C3F716 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BE9D4E1ED0BE8100C3F716 /* API.swift */; };
 		9C01267B1CE3189100319154 /* Repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C01267A1CE3189100319154 /* Repo.swift */; };
 		9C14CF5D1CE30D8300C7301E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C14CF5C1CE30D8300C7301E /* AppDelegate.swift */; };
 		9C14CF5F1CE30D8300C7301E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C14CF5E1CE30D8300C7301E /* ViewController.swift */; };
@@ -37,10 +43,13 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				2949A82C1EFA752B00216B68 /* SwiftyJSON.framework in Embed Frameworks */,
 				298154E41ECA1A5800357AF2 /* RxSwift.framework in Embed Frameworks */,
 				298154E21ECA1A5800357AF2 /* RxRealm.framework in Embed Frameworks */,
 				298154E01ECA1A5800357AF2 /* RxCocoa.framework in Embed Frameworks */,
+				2949A82E1EFA752B00216B68 /* TRON.framework in Embed Frameworks */,
 				2996716A1EF06606000D2B50 /* RxDataSources.framework in Embed Frameworks */,
+				2949A82A1EFA752B00216B68 /* Alamofire.framework in Embed Frameworks */,
 				298154DE1ECA1A5800357AF2 /* RealmSwift.framework in Embed Frameworks */,
 				298154DC1ECA1A5800357AF2 /* Realm.framework in Embed Frameworks */,
 			);
@@ -52,13 +61,16 @@
 /* Begin PBXFileReference section */
 		2909CE831ED1A8560067CFFD /* Log.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		2946B7FA1ECF45FF0017D01F /* ModelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelView.swift; sourceTree = "<group>"; };
+		2949A8261EFA752B00216B68 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		2949A8271EFA752B00216B68 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
+		2949A8281EFA752B00216B68 /* TRON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TRON.framework; path = Carthage/Build/iOS/TRON.framework; sourceTree = "<group>"; };
 		298154D11ECA1A3900357AF2 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = Carthage/Build/iOS/Realm.framework; sourceTree = "<group>"; };
 		298154D21ECA1A3900357AF2 /* RealmSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RealmSwift.framework; path = Carthage/Build/iOS/RealmSwift.framework; sourceTree = "<group>"; };
 		298154D31ECA1A3900357AF2 /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
 		298154D41ECA1A3900357AF2 /* RxRealm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxRealm.framework; path = Carthage/Build/iOS/RxRealm.framework; sourceTree = "<group>"; };
 		298154D51ECA1A3900357AF2 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		299671681EF06606000D2B50 /* RxDataSources.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxDataSources.framework; path = Carthage/Build/iOS/RxDataSources.framework; sourceTree = "<group>"; };
-		29BE9D4E1ED0BE8100C3F716 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		29BE9D4E1ED0BE8100C3F716 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		9C01267A1CE3189100319154 /* Repo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Repo.swift; sourceTree = "<group>"; };
 		9C14CF591CE30D8300C7301E /* GitHubSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C14CF5C1CE30D8300C7301E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -74,10 +86,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2949A82B1EFA752B00216B68 /* SwiftyJSON.framework in Frameworks */,
 				298154D61ECA1A3900357AF2 /* Realm.framework in Frameworks */,
 				298154D71ECA1A3900357AF2 /* RealmSwift.framework in Frameworks */,
 				298154D81ECA1A3900357AF2 /* RxCocoa.framework in Frameworks */,
+				2949A82D1EFA752B00216B68 /* TRON.framework in Frameworks */,
 				299671691EF06606000D2B50 /* RxDataSources.framework in Frameworks */,
+				2949A8291EFA752B00216B68 /* Alamofire.framework in Frameworks */,
 				298154D91ECA1A3900357AF2 /* RxRealm.framework in Frameworks */,
 				298154DA1ECA1A3900357AF2 /* RxSwift.framework in Frameworks */,
 			);
@@ -89,6 +104,9 @@
 		298154D01ECA1A3900357AF2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2949A8261EFA752B00216B68 /* Alamofire.framework */,
+				2949A8271EFA752B00216B68 /* SwiftyJSON.framework */,
+				2949A8281EFA752B00216B68 /* TRON.framework */,
 				299671681EF06606000D2B50 /* RxDataSources.framework */,
 				298154D11ECA1A3900357AF2 /* Realm.framework */,
 				298154D21ECA1A3900357AF2 /* RealmSwift.framework */,
@@ -128,7 +146,7 @@
 				9C14CF631CE30D8300C7301E /* Assets.xcassets */,
 				9C14CF651CE30D8300C7301E /* LaunchScreen.storyboard */,
 				2946B7FA1ECF45FF0017D01F /* ModelView.swift */,
-				29BE9D4E1ED0BE8100C3F716 /* Request.swift */,
+				29BE9D4E1ED0BE8100C3F716 /* API.swift */,
 			);
 			path = GitHubSearch;
 			sourceTree = "<group>";
@@ -209,7 +227,7 @@
 				9C01267B1CE3189100319154 /* Repo.swift in Sources */,
 				9C14CF5F1CE30D8300C7301E /* ViewController.swift in Sources */,
 				2909CE841ED1A8560067CFFD /* Log.swift in Sources */,
-				29BE9D4F1ED0BE8100C3F716 /* Request.swift in Sources */,
+				29BE9D4F1ED0BE8100C3F716 /* API.swift in Sources */,
 				2946B7FB1ECF45FF0017D01F /* ModelView.swift in Sources */,
 				9C14CF5D1CE30D8300C7301E /* AppDelegate.swift in Sources */,
 			);

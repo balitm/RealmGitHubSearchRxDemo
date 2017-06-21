@@ -56,23 +56,44 @@ final class ModelView {
 
         let longInput = input.filter { $0.0.characters.count > 2 }
 
-        let url = longInput.throttle(0.5, scheduler: MainScheduler.instance)
-            .map {
-                return URL.gitHubSearch($0, language: $1)
-        }
+//        let url = longInput.throttle(0.5, scheduler: MainScheduler.instance)
+//            .map {
+//                return URL.gitHubSearch($0, language: $1)
+//        }
 
-        let request = Request(urlObservable: url)
-
-        request.response
-            .subscribe(onNext: { items in
-                let repos = items.map { Repo(value: $0) }
+        let _ = longInput.throttle(0.5, scheduler: MainScheduler.instance)
+            .flatMapLatest { params -> Observable<API.Github> in
+                DLog("params mapped to search: \(params.0), \(params.1)")
+                return API.Github.search(params.0, language: params.1)
+            }
+            .subscribe(onNext: { (hit: API.Github) in
+                DLog("request executed: \(hit)")
+                let repos = hit.items.map { Repo(value: $0) }
 
                 let realm = try! Realm()
                 try! realm.write {
                     realm.add(repos, update: true)
                 }
+            }, onError: { error in
+                DLog("Error: \(error)")
+            }, onCompleted: {
+                DLog("Completed")
+            }, onDisposed: {
+                DLog("Disposed")
             })
             .disposed(by: bag)
+//        let request = Request(urlObservable: url)
+//
+//        request.response
+//            .subscribe(onNext: { items in
+//                let repos = items.map { Repo(value: $0) }
+//
+//                let realm = try! Realm()
+//                try! realm.write {
+//                    realm.add(repos, update: true)
+//                }
+//            })
+//            .disposed(by: bag)
 
         // Bind repo changes.
         longInput.subscribe(onNext: { params in
