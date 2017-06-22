@@ -54,22 +54,19 @@ final class ModelView {
         }
         .shareReplay(1)
 
-        let longInput = input.filter { $0.0.characters.count > 2 }
-
-//        let url = longInput.throttle(0.5, scheduler: MainScheduler.instance)
-//            .map {
-//                return URL.gitHubSearch($0, language: $1)
-//        }
+        let longInput = input
+            .filter { $0.0.characters.count > 2 }
 
         let events = longInput.throttle(0.5, scheduler: MainScheduler.instance)
+            .debug()
             .flatMapLatest { params -> Observable<Event<API.Github>> in
                 DLog("params mapped to search: \(params.0), \(params.1)")
                 return API.Github.search(params.0, language: params.1)
             }
+            .shareReplay(1)
 
         events.elements()
             .subscribe(onNext: { (hit: API.Github) in
-                DLog("request executed: \(hit)")
                 let repos = hit.items.map { Repo(value: $0) }
 
                 let realm = try! Realm()
@@ -96,19 +93,6 @@ final class ModelView {
             })
             .disposed(by: bag)
 
-//        let request = Request(urlObservable: url)
-//
-//        request.response
-//            .subscribe(onNext: { items in
-//                let repos = items.map { Repo(value: $0) }
-//
-//                let realm = try! Realm()
-//                try! realm.write {
-//                    realm.add(repos, update: true)
-//                }
-//            })
-//            .disposed(by: bag)
-
         // Bind repo changes.
         longInput.subscribe(onNext: { params in
             self.resultBag = DisposeBag()
@@ -118,8 +102,10 @@ final class ModelView {
             let result = realm.objects(Repo.self)
                 .filter("full_name CONTAINS[c] %@ AND language = %@", params.0, params.1)
 
+            DLog("Starting changset observable for \"full_name CONTAINS[c] \(params.0) AND language = \(params.1)\".")
             Observable.changeset(from: result)
                 .map { (objs: AnyRealmCollection<Repo>, _: RealmChangeset?) -> [SectionRepoData] in
+                    DLog("repo objs: \(objs.count)")
                     let section = SectionRepoData(identity: 0,
                                                   items: objs.map { RepoData(identity: $0.id, name: $0.full_name) })
                     return [section]
