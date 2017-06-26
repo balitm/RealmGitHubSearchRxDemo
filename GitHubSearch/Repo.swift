@@ -11,9 +11,9 @@ import Foundation
 import RealmSwift
 
 class Repo: Object {
-    dynamic var id = 0
-    dynamic var full_name = ""
-    dynamic var language: String? = ""
+    @objc dynamic var id = 0
+    @objc dynamic var full_name = ""
+    @objc dynamic var language: String? = ""
     
     override class func primaryKey() -> String? {
         return "id"

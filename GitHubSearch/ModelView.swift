@@ -104,7 +104,8 @@ final class ModelView {
 
             DLog("Starting changset observable for \"full_name CONTAINS[c] \(params.0) AND language = \(params.1)\".")
             Observable.changeset(from: result)
-                .map { (objs: AnyRealmCollection<Repo>, _: RealmChangeset?) -> [SectionRepoData] in
+                .map { (val: (AnyRealmCollection<Repo>, RealmChangeset?)) -> [SectionRepoData] in
+                    let (objs, _) = val
                     DLog("repo objs: \(objs.count)")
                     let section = SectionRepoData(identity: 0,
                                                   items: objs.map { RepoData(identity: $0.id, name: $0.full_name) })
