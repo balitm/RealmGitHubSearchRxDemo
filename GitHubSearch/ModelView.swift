@@ -44,7 +44,7 @@ final class ModelView {
 
     typealias Parameter = (String, String)
 
-    let repos = BehaviorSubject<([SectionRepoData])>(value: [])
+    let repos = Variable<([SectionRepoData])>([])
     private let bag = DisposeBag()
     private var resultBag = DisposeBag()
 
@@ -121,7 +121,7 @@ final class ModelView {
                 params.0.characters.count <= 2
             }
             .subscribe(onNext: { _ in
-                self.repos.on(.next([]))
+                self.repos.value = []
             })
             .disposed(by: bag)
     }

@@ -50,7 +50,7 @@ final class ViewController: UIViewController {
         }
 
         // Bind results to table.
-        modelView.repos
+        modelView.repos.asObservable()
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: bag)
     }
