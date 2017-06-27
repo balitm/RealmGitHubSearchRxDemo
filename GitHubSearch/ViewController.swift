@@ -38,7 +38,7 @@ final class ViewController: UIViewController {
         query.becomeFirstResponder()
 
         // Define input.
-        let text = query.rx.text.map { $0 ?? "" }
+        let text = query.rx.text.orEmpty.asObservable()
         let lang = language.rx_selected.map { $0! }
         modelView = ModelView(term: text, language: lang)
 
